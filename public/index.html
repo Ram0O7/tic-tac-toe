@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+    html{
+      background-color: #1f1f1f;
+      font-family: 'Ubuntu',sans-serif;
+    }
+    h1{
+      margin: 10px;
+      font-size: 30px;
+      font-weight: 900;
+      border-radius: 8px;
+      padding:10px;
+      border: 1px solid crimson;
+      text-align: center;
+      color: bisque;
+    }
+    table {
+      width: 330px;
+      height: 330px;
+      margin: 10px auto;
+      border-collapse: collapse;
+    }
+
+    .cell {
+      width: 110px;
+      height: 110px;
+      border: 1px solid crimson;
+      text-align: center;
+      font-size: 50px;
+      font-weight: bold;
+      background-color: bisque;
+    }
+
+    button {
+      width: 300px;
+      height: 50px;
+      border: 1px solid crimson;
+      border-radius: 10px;
+      background-color: #1c1c1c;
+      font-size: 30px;
+      font-weight: 900;
+      align-self: center;
+    }
+    .game-body{
+      display: flex;
+      flex-direction: column;
+    }
+    .btns{
+      display: flex;
+      flex-direction: column;
+      gap:10px;
+    }
+
+    @media (min-width:768px) {
+      h1{
+        width: 60%;
+        margin-inline: auto;
+      }
+      body{
+        width: 60vw;
+        margin-inline: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="game-body">
+    <h1>TIC-TAC-TOE</h1>
+    <table>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+    </table>
+    <div class="btns">
+    <button id="x-button">X</button>
+    <button id="o-button">O</button>
+    <button id="r-button">RESET</button>
+  </div>
+  </div>
+  <script src="socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    let currentPlayer;
+    let gameState;
+
+    // Get the HTML elements for the X and O buttons
+    const xButton = document.querySelector('#x-button');
+    const oButton = document.querySelector('#o-button');
+    const btns = document.querySelector('.btns');
+    const draw = document.querySelector('.draw');
+    // Get the HTML element for the reset button
+    const resetButton = document.querySelector('#r-button');
+
+    
+    
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+    
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
+    });
+    
+    socket.on('updateGame', (data) => {
+      gameState = data.gameState;
+      currentPlayer = data.currentPlayer;
+      render();
+    });
+    
+    socket.on('gameOver', (data) => {
+      if(data.winner == 'O'){
+        xButton.style.backgroundColor = 'red';
+        oButton.style.backgroundColor = 'green';
+        oButton.innerHTML = 'WINNER \'O\'';
+      }
+      else if(data.winner == 'X'){
+        oButton.style.backgroundColor = 'red';
+        xButton.innerHTML = 'WINNER \'X\'';
+        xButton.style.backgroundColor = 'green';
+      } else{
+        const draw = document.createElement('button');
+        draw.innerText = 'DRAW';
+        draw.classList.add('draw');
+        btns.appendChild(draw);
+        draw.style.backgroundColor = 'orange';
+      }
+      // Add click event listener to the reset button
+      resetButton.addEventListener('click', () => {
+        socket.emit('resetGame');
+        if(btns.classList.contains('draw')){
+          btns.removeChild(draw);
+        }
+        window.location.reload();
+      });
+    });
+
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach((cell, index) => {
+      cell.addEventListener('click', () => {
+          socket.emit('play', { position: index });
+      });
+    });
+
+    function render() {
+      cells.forEach((cell, index) => {
+        cell.textContent = gameState[index];
+      });
+    }
+  </script>
+</body>
+
+</html>
