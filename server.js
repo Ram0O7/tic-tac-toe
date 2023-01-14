@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
+const port = process.env.PORT || 3000;
 
 const app = express();
 const server = http.createServer(app);
@@ -70,6 +71,6 @@ const checkDraw = () => {
     return true;
 }
 
-server.listen(3000, () => {
-    console.log('Server started on port 3000');
+server.listen(port, () => {
+    console.log(`Server started on port ${port}`);
 });
