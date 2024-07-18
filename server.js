@@ -23,7 +23,8 @@ io.on("connection", (socket) => {
 
     socket.on("resetGame", () => {
       gameState = Array(9).fill("");
-      currentPlayer = "X";
+      currentPlayer = currentPlayer === "X" ? "O" : "X";
+      currentPlayerSocketId = getCurrentPlayerSocketId();
       io.emit("reloadPage");
       io.emit("updateGame", { gameState, currentPlayer });
     });
@@ -47,6 +48,8 @@ io.on("connection", (socket) => {
         socket.emit("wrongTurn");
       }
     });
+  } else {
+    socket.emit("roomFull", { message: "Room is full. Try again later." });
   }
 });
 

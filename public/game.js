@@ -28,7 +28,8 @@ socket.on("gameOver", (data) => {
 });
 
 socket.on("reloadPage", () => {
-  window.location.reload();
+  resetGameUI();
+  render();
 });
 
 socket.on("wrongTurn", () => {
@@ -59,6 +60,25 @@ function render() {
       cell.classList.remove("played");
     }
   });
+}
+
+function resetGameUI() {
+  // Reset the content and classes of each cell
+  cells.forEach((cell) => {
+    cell.textContent = "";
+    cell.classList.remove("played");
+  });
+
+  xButton.style.backgroundColor = "";
+  oButton.style.backgroundColor = "";
+  xButton.innerHTML = "X";
+  oButton.innerHTML = "O";
+
+  // Remove the draw button if it exists
+  const drawButton = document.querySelector(".draw");
+  if (drawButton) {
+    drawButton.remove();
+  }
 }
 
 function handleGameOver(winner) {
