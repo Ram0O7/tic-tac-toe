@@ -1,6 +1,7 @@
 const socket = io();
 let currentPlayer;
 let gameState = [];
+let isGameOver = false;
 
 // Get HTML elements
 const cells = document.querySelectorAll(".cell");
@@ -25,6 +26,7 @@ socket.on("updateGame", (data) => {
 
 socket.on("gameOver", (data) => {
   handleGameOver(data.winner);
+  isGameOver = true;
 });
 
 socket.on("reloadPage", () => {
@@ -42,6 +44,7 @@ socket.on("roomFull", () => {
 
 cells.forEach((cell) => {
   cell.addEventListener("click", () => {
+    if (isGameOver) return;
     const index = cell.getAttribute("data-index");
     socket.emit("play", { position: index });
   });
@@ -79,6 +82,7 @@ function resetGameUI() {
   if (drawButton) {
     drawButton.remove();
   }
+  isGameOver = false;
 }
 
 function handleGameOver(winner) {
