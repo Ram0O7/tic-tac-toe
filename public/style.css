@@ -78,8 +78,8 @@ button {
 .emoji-container {
   position: absolute;
   bottom: 0;
-  left: 10%;
-  transform: translateX(-10%);
+  left: 2%;
+  transform: translateX(-2%);
   pointer-events: none; /* Prevent interaction with the emoji container */
 }
 
