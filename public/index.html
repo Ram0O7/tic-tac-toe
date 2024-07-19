@@ -7,6 +7,7 @@
     <title>Tic-Tac-Toe</title>
   </head>
   <body>
+    <div class="emoji-container"></div>
     <div class="game-body">
       <h1>TIC-TAC-TOE</h1>
       <table>
@@ -31,7 +32,16 @@
         <button id="o-button">O</button>
         <button id="r-button">RESET</button>
       </div>
+      <div class="emojis">
+        <span class="emoji">😅</span>
+        <span class="emoji">🥰</span>
+        <span class="emoji">😥</span>
+        <span class="emoji">🤣</span>
+        <span class="emoji">🙂</span>
+      </div>
     </div>
+    <audio id="game-start" src="./game-start.mp3"></audio>
+    <audio id="game-over" src="./game-over.mp3"></audio>
     <script src="socket.io/socket.io.js"></script>
     <script src="game.js"></script>
   </body>

@@ -48,6 +48,11 @@ io.on("connection", (socket) => {
         socket.emit("wrongTurn");
       }
     });
+
+    socket.on("emoji", (data) => {
+      const { emoji } = data;
+      io.emit("broadcastEmoji", { emoji });
+    });
   } else {
     socket.emit("roomFull", { message: "Room is full. Try again later." });
   }
