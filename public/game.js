@@ -47,6 +47,10 @@ socket.on("roomFull", () => {
   alert("Room is full. Try again later.");
 });
 
+socket.on("userLeft", () => {
+  alert("Your opponent left the room.");
+});
+
 socket.on("broadcastEmoji", (data) => {
   addEmoji(data.emoji);
 });

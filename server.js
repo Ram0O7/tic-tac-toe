@@ -63,6 +63,7 @@ io.on("connection", (socket) => {
     gameState = Array(9).fill("");
     io.emit("updateGame", { currentPlayer, gameState });
     io.emit("reloadPage");
+    io.emit("userLeft");
     currentPlayerSocketId = getCurrentPlayerSocketId();
   });
 });
