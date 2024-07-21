@@ -56,6 +56,15 @@ io.on("connection", (socket) => {
   } else {
     socket.emit("roomFull", { message: "Room is full. Try again later." });
   }
+
+  // handle disconnect logic
+  socket.on("disconnect", () => {
+    playerSockets = playerSockets.filter((id) => id !== socket.id);
+    gameState = Array(9).fill("");
+    io.emit("updateGame", { currentPlayer, gameState });
+    io.emit("reloadPage");
+    currentPlayerSocketId = getCurrentPlayerSocketId();
+  });
 });
 
 const getCurrentPlayerSocketId = () => {
