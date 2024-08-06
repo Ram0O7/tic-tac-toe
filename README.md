@@ -69,7 +69,7 @@ Contributions are welcome! Please follow these steps:
 
 ## Contact
 
-- **Email:** [ram706860@gmail.com](mailto:ramkrishn@example.com)
+- **Email:** [ram706860@gmail.com](mailto:ram706860@gmail.com)
 - **LinkedIn:** [linkedin.com/in/ramkrishn-rai](https://linkedin.com/in/ramkrishn-rai)
 
 ---
